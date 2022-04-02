@@ -1,9 +1,13 @@
 package com.qingfeng.model.vo.hosp;
 
-import com.baomidou.mybatisplus.annotation.TableField;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
+/**
+ * 封装医院设置条件查询的相关实体属性的Vo类
+ *
+ * @author 清风学Java
+ */
 @Data
 public class HospitalSetQueryVo {
 

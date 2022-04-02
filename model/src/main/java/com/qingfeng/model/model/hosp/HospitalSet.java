@@ -9,6 +9,7 @@ import lombok.Data;
 
 /**
  * 医院相关设置的实体类
+ * @TableName("hospital_set")： 设置表的名字
  *
  * @author 清风学Java
  */

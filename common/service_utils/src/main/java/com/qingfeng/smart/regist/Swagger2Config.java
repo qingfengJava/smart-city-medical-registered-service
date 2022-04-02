@@ -27,7 +27,7 @@ public class Swagger2Config {
                 .apiInfo(webApiInfo())
                 .select()
                 //只显示api路径下的页面
-                .paths(Predicates.and(PathSelectors.regex("/api/.*")))
+                .paths(Predicates.and(PathSelectors.regex("/api/*")))
                 .build();
 
     }
@@ -51,17 +51,17 @@ public class Swagger2Config {
                 .title("网站-API文档")
                 .description("本文档描述了网站微服务接口定义")
                 .version("1.0")
-                .contact(new Contact("atguigu", "http://atguigu.com", "493211102@qq.com"))
+                .contact(new Contact("qingfeng_java", "https://gitee.com/pjlwlcxy/projects", "179643189@qq.com"))
                 .build();
     }
 
     private ApiInfo adminApiInfo(){
 
         return new ApiInfoBuilder()
-                .title("后台管理系统-API文档")
+                .title("基于微服务架构的智慧城市医疗挂号服务系统-后台管理系统-API文档")
                 .description("本文档描述了后台管理系统微服务接口定义")
                 .version("1.0")
-                .contact(new Contact("atguigu", "http://atguigu.com", "49321112@qq.com"))
+                .contact(new Contact("qingfeng_java", "https://gitee.com/pjlwlcxy/projects", "179643189@qq.com"))
                 .build();
     }
 
