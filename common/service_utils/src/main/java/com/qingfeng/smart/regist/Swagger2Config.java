@@ -58,7 +58,7 @@ public class Swagger2Config {
     private ApiInfo adminApiInfo(){
 
         return new ApiInfoBuilder()
-                .title("基于微服务架构的智慧城市医疗挂号服务系统-后台管理系统-API文档")
+                .title("基于微服务架构的智慧城市医疗挂号服务平台-后台管理系统-API文档")
                 .description("本文档描述了后台管理系统微服务接口定义")
                 .version("1.0")
                 .contact(new Contact("qingfeng_java", "https://gitee.com/pjlwlcxy/projects", "179643189@qq.com"))

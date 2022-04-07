@@ -26,6 +26,7 @@ import java.util.Random;
 @RestController
 @Api(value = "提供医院设置层的相关功能接口",tags = "医院设置层的接口")
 @RequestMapping("/admin/hosp/hospitalSet")
+@CrossOrigin
 public class HospitalSetController {
 
     @Autowired

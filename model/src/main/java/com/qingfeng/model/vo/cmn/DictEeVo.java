@@ -1,15 +1,12 @@
 package com.qingfeng.model.vo.cmn;
 
 import com.alibaba.excel.annotation.ExcelProperty;
-import com.alibaba.excel.metadata.BaseRowModel;
 import lombok.Data;
 
 /**
- * <p>
- * Dict
- * </p>
+ * Excel数据导出的实体封装
  *
- * @author qy
+ * @author 清风学Java
  */
 @Data
 public class DictEeVo {

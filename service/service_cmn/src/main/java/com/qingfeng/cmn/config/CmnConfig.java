@@ -1,4 +1,4 @@
-package com.qingfeng.hosp.config;
+package com.qingfeng.cmn.config;
 
 import com.baomidou.mybatisplus.extension.plugins.PaginationInterceptor;
 import org.mybatis.spring.annotation.MapperScan;
@@ -12,11 +12,11 @@ import org.springframework.context.annotation.Configuration;
  *
  * @author 清风学Java
  * @version 1.0.0
- * @date 2022/4/1
+ * @date 2022/4/5
  */
 @Configuration
-@MapperScan("com.qingfeng.hosp.mapper")
-public class HospConfig {
+@MapperScan("com.qingfeng.cmn.mapper")
+public class CmnConfig {
 
     /**
      * 分页插件

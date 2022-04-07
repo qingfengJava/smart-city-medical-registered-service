@@ -63,6 +63,9 @@ public class Dict {
     @TableField("dict_code")
     private String dictCode;
 
+    /**
+     * 做表层级显示的一个字段，因为表中没有，所以要将其排除掉
+     */
     @ApiModelProperty(value = "是否包含子节点")
     @TableField(exist = false)
     private boolean hasChildren;
