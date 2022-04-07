@@ -9,6 +9,8 @@ import com.qingfeng.cmn.service.DictService;
 import com.qingfeng.model.model.cmn.Dict;
 import com.qingfeng.model.vo.cmn.DictEeVo;
 import org.springframework.beans.BeanUtils;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -33,10 +35,13 @@ public class DictServiceImpl  extends ServiceImpl<DictMapper, Dict> implements D
 
     /**
      * 根据数据Id查询子数据列表
+     *
+     * @Cacheable： 第一次读取数据库，将数据存入缓存，之后就直接从缓存中读取
      * @param id
      * @return
      */
     @Override
+    @Cacheable(value = "dict",keyGenerator = "keyGenerator")
     public List<Dict> findChildData(Long id) {
         QueryWrapper<Dict> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("parent_id", id);
@@ -47,6 +52,7 @@ public class DictServiceImpl  extends ServiceImpl<DictMapper, Dict> implements D
             boolean isChild = this.isChildren(dictId);
             dict.setHasChildren(isChild);
         }
+        System.out.println(dictList);
         return dictList;
     }
 
@@ -83,9 +89,12 @@ public class DictServiceImpl  extends ServiceImpl<DictMapper, Dict> implements D
 
     /**
      * 导入数据字典
+     *
+     * @CacheEvict 添加数据后，清除缓存
      * @param file
      */
     @Override
+    @CacheEvict(value = "dict", allEntries=true)
     public void importDictData(MultipartFile file) {
         try {
             EasyExcel.read(file.getInputStream(), DictEeVo.class, new DictListener(baseMapper)).sheet().doRead();

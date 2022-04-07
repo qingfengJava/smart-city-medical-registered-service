@@ -1,4 +1,4 @@
-package com.qingfeng.smart.regist;
+package com.qingfeng.smart.config;
 
 import com.google.common.base.Predicates;
 import org.springframework.context.annotation.Bean;
