@@ -6,13 +6,15 @@ mybatis-plus:
   mapper-locations: classpath:mappers/*.xml
 spring:
   thymeleaf:
-    mode: LEGACYHTML5
+#    mode: LEGACYHTML5
     #编码 可不用配置
     encoding: UTF-8
     #开发配置为false,避免修改模板还要重启服务器
     cache: false
     #配置模板路径，默认是templates，可以不用配置
     prefix: classpath:/templates/
+    suffix: .html
+    mode: HTML
   redis:
     host: 47.108.28.239
     port: 6379

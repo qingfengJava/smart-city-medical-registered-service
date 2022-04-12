@@ -1,5 +1,6 @@
 package com.qingfeng.hosp.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.qingfeng.hosp.mapper.HospitalSetMapper;
 import com.qingfeng.hosp.service.HospitalSetService;
@@ -17,7 +18,20 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class HospitalSetServiceImpl extends ServiceImpl<HospitalSetMapper, HospitalSet> implements HospitalSetService {
-
     //注意： 使用ServiceImpl之后，MP已经自动帮助我们注入好了对应的持久层接口（dao/mapper）
+
+
+    /**
+     * 根据传递过来的医院编码，查询数据库，查询签名
+     * @param hoscode
+     * @return
+     */
+    @Override
+    public String getSingKey(String hoscode) {
+        QueryWrapper<HospitalSet> wrapper = new QueryWrapper<>();
+        wrapper.eq("hoscode", hoscode);
+        HospitalSet hospitalSet = baseMapper.selectOne(wrapper);
+        return hospitalSet.getSignKey();
+    }
 
 }

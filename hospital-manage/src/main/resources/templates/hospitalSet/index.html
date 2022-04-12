@@ -14,7 +14,7 @@
                             <label class="col-sm-2 control-label">医院code：</label>
 
                             <div class="col-sm-10">
-                                <input type="text" name="hoscode" id="hoscode" th:value="${hospitalSet.hoscode}" class="form-control"/>
+                                <input type="text" name="hoscode" id="hoscode" th:if="${hospitalSet.hoscode != null}" th:value="${hospitalSet.hoscode}" class="form-control"/>
                             </div>
                         </div>
                         <div class="hr-line-dashed"></div>
@@ -22,7 +22,7 @@
                             <label class="col-sm-2 control-label">签名key：</label>
 
                             <div class="col-sm-10">
-                                <input type="text" name="signKey" id="signKey" th:value="${hospitalSet.signKey}" class="form-control"/>
+                                <input type="text" name="signKey" id="signKey" th:if="${hospitalSet.signKey != null}"  th:value="${hospitalSet.signKey}" class="form-control"/>
                             </div>
                         </div>
                         <div class="hr-line-dashed"></div>
@@ -30,7 +30,7 @@
                             <label class="col-sm-2 control-label">统一预约挂号平台基础路径：</label>
 
                             <div class="col-sm-10">
-                                <input type="text" name="apiUrl" id="apiUrl" th:value="${hospitalSet.apiUrl}" class="form-control"/>
+                                <input type="text" name="apiUrl" id="apiUrl" th:if="${hospitalSet.apiUrl != null}" th:value="${hospitalSet.apiUrl}" class="form-control"/>
                             </div>
                         </div>
                         <div class="hr-line-dashed"></div>
