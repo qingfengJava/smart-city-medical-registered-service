@@ -13,4 +13,12 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface DepartmentRepository extends MongoRepository<Department,String> {
+
+    /**
+     * 查询科室信息是否存在
+     * @param hoscode
+     * @param depcode
+     * @return
+     */
+    Department getDepartmentByHoscodeAndDepcode(String hoscode, String depcode);
 }

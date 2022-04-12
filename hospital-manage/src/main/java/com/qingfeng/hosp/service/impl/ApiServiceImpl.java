@@ -66,6 +66,10 @@ public class ApiServiceImpl implements ApiService {
         return hospitalSet.getApiUrl();
     }
 
+    /**
+     * 查询医院信息
+     * @return
+     */
     @Override
     public JSONObject getHospital() {
         Map<String, Object> paramMap = new HashMap<>();
@@ -81,6 +85,11 @@ public class ApiServiceImpl implements ApiService {
         return null;
     }
 
+    /**
+     * 上传医院信息
+     * @param data
+     * @return
+     */
     @Override
     public boolean saveHospital(String data) {
         JSONObject jsonObject = JSONObject.parseObject(data);
@@ -114,6 +123,12 @@ public class ApiServiceImpl implements ApiService {
         }
     }
 
+    /**
+     * 查询科室
+     * @param pageNum
+     * @param pageSize
+     * @return
+     */
     @Override
     public Map<String, Object> findDepartment(int pageNum, int pageSize) {
         Map<String, Object> result = new HashMap();
@@ -124,7 +139,7 @@ public class ApiServiceImpl implements ApiService {
         paramMap.put("page",pageNum);
         paramMap.put("limit",pageSize);
         paramMap.put("timestamp", HttpRequestHelper.getTimestamp());
-        paramMap.put("sign", HttpRequestHelper.getSign(paramMap, this.getSignKey()));
+        paramMap.put("sign", MD5.encrypt(this.getSignKey()));
         JSONObject respone = HttpRequestHelper.sendRequest(paramMap,this.getApiUrl()+"/api/hosp/department/list");
         if(null != respone && 200 == respone.getIntValue("code")) {
             JSONObject jsonObject = respone.getJSONObject("data");
@@ -138,6 +153,11 @@ public class ApiServiceImpl implements ApiService {
         return result;
     }
 
+    /**
+     * 上传科室的方法
+     * @param data
+     * @return
+     */
     @Override
     public boolean saveDepartment(String data) {
         JSONArray jsonArray = new JSONArray();
@@ -160,7 +180,7 @@ public class ApiServiceImpl implements ApiService {
             paramMap.put("bigname",jsonObject.getString("bigname"));
 
             paramMap.put("timestamp", HttpRequestHelper.getTimestamp());
-            paramMap.put("sign",HttpRequestHelper.getSign(paramMap, this.getSignKey()));
+            paramMap.put("sign",MD5.encrypt(this.getSignKey()));
             JSONObject respone = HttpRequestHelper.sendRequest(paramMap,this.getApiUrl()+"/api/hosp/saveDepartment");
             System.out.println(respone.toJSONString());
 
@@ -171,13 +191,18 @@ public class ApiServiceImpl implements ApiService {
         return true;
     }
 
+    /**
+     * 删除科室信息的方法
+     * @param depcode
+     * @return
+     */
     @Override
     public boolean removeDepartment(String depcode) {
         Map<String, Object> paramMap = new HashMap<>();
         paramMap.put("hoscode",this.getHoscode());
         paramMap.put("depcode",depcode);
         paramMap.put("timestamp", HttpRequestHelper.getTimestamp());
-        paramMap.put("sign", HttpRequestHelper.getSign(paramMap, this.getSignKey()));
+        paramMap.put("sign", MD5.encrypt(this.getSignKey()));
         JSONObject respone = HttpRequestHelper.sendRequest(paramMap,this.getApiUrl()+"/api/hosp/department/remove");
         System.out.println(respone.toJSONString());
         if(null != respone && 200 == respone.getIntValue("code")) {
