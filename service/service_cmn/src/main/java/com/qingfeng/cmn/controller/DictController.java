@@ -58,4 +58,20 @@ public class DictController {
         return Result.ok();
     }
 
+    @ApiOperation("根据dictcode和value查询数据字典等级名称")
+    @GetMapping("getName/{dictCode}/{value}")
+    public String getName(@PathVariable("dictCode") String dictCode,
+                          @PathVariable("value") String value){
+        String dictName = dictService.getDictName(dictCode,value);
+        return dictName;
+    }
+
+    @ApiOperation("根据value查询数据字典等级名称")
+    @GetMapping("getName/{value}")
+    public String getName(@PathVariable("value") String value){
+        String dictName = dictService.getDictName("",value);
+        return dictName;
+    }
+
+
 }

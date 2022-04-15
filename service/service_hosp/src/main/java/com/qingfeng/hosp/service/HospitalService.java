@@ -1,6 +1,8 @@
 package com.qingfeng.hosp.service;
 
 import com.qingfeng.model.model.hosp.Hospital;
+import com.qingfeng.model.vo.hosp.HospitalQueryVo;
+import org.springframework.data.domain.Page;
 
 import java.util.Map;
 
@@ -25,4 +27,13 @@ public interface HospitalService {
      * @return
      */
     Hospital getByHoscode(String hoscode);
+
+    /**
+     * 条件分页查询医院信息
+     * @param page
+     * @param limit
+     * @param hospitalQueryVo
+     * @return
+     */
+    Page<Hospital> selectHospPage(Integer page, Integer limit, HospitalQueryVo hospitalQueryVo);
 }
