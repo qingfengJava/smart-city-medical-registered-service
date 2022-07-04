@@ -12,6 +12,7 @@ import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -69,6 +70,13 @@ public class HospitalServiceImpl implements HospitalService {
         return hospital;
     }
 
+    /**
+     * 分页条件查询医院列表
+     * @param page
+     * @param limit
+     * @param hospitalQueryVo
+     * @return
+     */
     @Override
     public Page<Hospital> selectHospPage(Integer page, Integer limit, HospitalQueryVo hospitalQueryVo) {
         //创建pageable对象
@@ -91,6 +99,29 @@ public class HospitalServiceImpl implements HospitalService {
         });
 
         return pages;
+    }
+
+    @Override
+    public void updateHospStatus(String id, Integer status) {
+        //根据Id查询医院信息
+        Hospital hospital = hospitalRepository.findById(id).get();
+        //设置修改的值
+        hospital.setStatus(status);
+        hospital.setUpdateTime(new Date());
+        hospitalRepository.save(hospital);
+    }
+
+    @Override
+    public Map<String, Object> getHospById(String id) {
+        HashMap<String, Object> result = new HashMap<>(10);
+        Hospital hospital = this.setHospitalHosType(hospitalRepository.findById(id).get());
+        //医院基本信息（包含医院等级）
+        result.put("hospital",hospital);
+        //单独处理更直观
+        result.put("bookingRule",hospital.getBookingRule());
+        //不需要重复返回
+        hospital.setBookingRule(null);
+        return result;
     }
 
     /**

@@ -23,6 +23,11 @@ import java.time.Duration;
 /**
  * Redis的配置类
  *
+ * @EnableCaching：标记注解 @EnableCaching，开启缓存，并配置Redis缓存管理器。
+ * @EnableCaching 注释触发后置处理器, 检查每一个Spring bean 的 public 方法是
+ * 否存在缓存注解。如果找到这样的一个注释, 自动创建一个代理拦截方法调用和处理
+ * 相应的缓存行为。
+ *
  * @author 清风学Java
  * @version 1.0.0
  * @date 2022/4/7

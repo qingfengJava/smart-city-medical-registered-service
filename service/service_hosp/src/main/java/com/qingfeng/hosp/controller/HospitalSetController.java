@@ -29,8 +29,12 @@ import java.util.Random;
 @CrossOrigin
 public class HospitalSetController {
 
-    @Autowired
     private HospitalSetService hospitalSetService;
+
+    @Autowired
+    public HospitalSetController(HospitalSetService hospitalSetService) {
+        this.hospitalSetService = hospitalSetService;
+    }
 
     @ApiOperation("查询所有医院设置信息")
     @GetMapping("findAll")
@@ -151,7 +155,7 @@ public class HospitalSetController {
         HospitalSet hospitalSet = hospitalSetService.getById(id);
         String signKey = hospitalSet.getSignKey();
         String hoscode = hospitalSet.getHoscode();
-        //TODD 发送短信   后面通过短信进行完善
+        //TODO 发送短信   后面通过短信进行完善
         return Result.ok();
     }
 

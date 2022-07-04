@@ -2,8 +2,10 @@ package com.qingfeng.hosp.service;
 
 import com.qingfeng.model.model.hosp.Department;
 import com.qingfeng.model.vo.hosp.DepartmentQueryVo;
+import com.qingfeng.model.vo.hosp.DepartmentVo;
 import org.springframework.data.domain.Page;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -32,8 +34,15 @@ public interface DepartmentService {
 
     /**
      * 根据医院编号和科室编号删除科室信息
-     * @param hoscode
-     * @param depcode
+     * @param hoscode  医院编号
+     * @param depcode  科室编号
      */
     void remove(String hoscode, String depcode);
+
+    /**
+     * 根据医院编号查询科室信息
+     * @param hoscode
+     * @return
+     */
+    List<DepartmentVo> findDeptTree(String hoscode);
 }

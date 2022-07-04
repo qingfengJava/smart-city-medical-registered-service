@@ -164,7 +164,7 @@ public class ApiController {
 
         //1、获取医院系统传递过来的签名  签名进行了Md5加密
         String hospSign = (String) paramMap.get("sign");
-        //2、根据传递过来的医院系统的编码，查询数据库，进行签名
+        //2、根据传递过来的医院系统的编码，查询数据库，查询前，查询签名
         String hoscode = (String) paramMap.get("hoscode");
         String singKey = hospitalSetService.getSingKey(hoscode);
         //3、把数据库查询出来的签名进行MD5加密

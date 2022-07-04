@@ -6,6 +6,9 @@ import lombok.Data;
 
 import java.util.Date;
 
+/**
+ * @author 清风学Java
+ */
 @Data
 @ApiModel(description = "Schedule")
 public class ScheduleQueryVo {
