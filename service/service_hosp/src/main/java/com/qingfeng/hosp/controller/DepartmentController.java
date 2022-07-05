@@ -20,7 +20,6 @@ import java.util.List;
 @RestController
 @Api(value = "提供医院管理的相关服务", tags = "医院科室管理接口")
 @RequestMapping("/admin/hosp/department")
-@CrossOrigin
 public class DepartmentController {
 
     @Autowired
