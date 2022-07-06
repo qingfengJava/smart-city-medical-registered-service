@@ -38,7 +38,7 @@ public class GlobalException extends RuntimeException {
 
     @Override
     public String toString() {
-        return "YyghException{" +
+        return "GlobalException{" +
                 "code=" + code +
                 ", message=" + this.getMessage() +
                 '}';

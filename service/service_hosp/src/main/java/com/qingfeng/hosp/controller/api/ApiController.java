@@ -14,6 +14,7 @@ import com.qingfeng.smart.helper.HttpRequestHelper;
 import com.qingfeng.smart.result.Result;
 import com.qingfeng.smart.result.ResultCodeEnum;
 import com.qingfeng.smart.utils.MD5;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -33,7 +34,7 @@ import java.util.Map;
  * @date 2022/4/10
  */
 @RestController
-@ApiOperation(value = "提供医院管理的控制层相关接口",tags = "医院管理的接口")
+@Api(value = "提供医院管理的控制层相关接口",tags = "医院管理的接口")
 @RequestMapping("/api/hosp")
 public class ApiController {
 

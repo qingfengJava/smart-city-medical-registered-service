@@ -4,6 +4,7 @@ import com.qingfeng.model.model.hosp.Hospital;
 import com.qingfeng.model.vo.hosp.HospitalQueryVo;
 import org.springframework.data.domain.Page;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -57,4 +58,18 @@ public interface HospitalService {
      * @return
      */
     String getHospName(String hoscode);
+
+    /**
+     * 根据医院名称做模糊查询
+     * @param hosname
+     * @return
+     */
+    List<Hospital> findByHosName(String hosname);
+
+    /**
+     * 根据医院编号获取医院预约挂号详情
+     * @param hoscode
+     * @return
+     */
+    Map<String, Object> item(String hoscode);
 }
