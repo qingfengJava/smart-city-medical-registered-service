@@ -9,8 +9,10 @@ import com.aliyuncs.exceptions.ClientException;
 import com.aliyuncs.exceptions.ServerException;
 import com.aliyuncs.http.MethodType;
 import com.aliyuncs.profile.DefaultProfile;
+import com.github.qcloudsms.SmsSingleSender;
 import com.qingfeng.service.msm.service.MsmService;
 import com.qingfeng.service.msm.utils.ConstantPropertiesUtils;
+import com.qingfeng.service.msm.utils.ConstantTengPropertiesUtils;
 import com.qingfeng.service.msm.utils.EmailUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -82,8 +84,23 @@ public class MsmServiceImpl implements MsmService {
 
     @Override
     public boolean sendEmail(String phone, String code) {
-        int i = emailUtils.sendEmail(phone, "【智慧医疗预约挂号服务平台】", "你本次登录或注册的验证码是：" + code+"\r\n注意：有效时间2分钟！！！");
+        int i = emailUtils.sendEmail(phone, "【智慧医疗预约挂号服务平台】", "你本次登录或注册的验证码是：" + code+"\r\n注意：有效时间5分钟！！！");
         return i == 1 ? true : false;
+    }
+
+    @Override
+    public boolean sendCodeByTeng(String phone, String code) {
+        try {
+            String[] params = {code,Integer.toString(5)};
+            SmsSingleSender sender = new SmsSingleSender(ConstantTengPropertiesUtils.APP_ID, ConstantTengPropertiesUtils.APP_KEY);
+            //封装发送信息并返回结果
+            sender.sendWithParam("86",phone,ConstantTengPropertiesUtils.TEMPLATE_ID,params,ConstantTengPropertiesUtils.SMS_SINGE,"","");
+
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
     /**

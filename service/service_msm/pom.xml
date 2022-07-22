@@ -26,6 +26,13 @@
             <version>4.4.0</version>
         </dependency>
 
+        <!-- 腾讯云发送短信服务的依赖 -->
+        <dependency>
+            <groupId>com.github.qcloudsms</groupId>
+            <artifactId>qcloudsms</artifactId>
+            <version>1.0.6</version>
+        </dependency>
+
         <!-- SpringBoot整合邮箱发送的依赖 -->
         <dependency>
             <groupId>org.springframework.boot</groupId>

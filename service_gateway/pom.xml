@@ -17,9 +17,15 @@
         <maven.compiler.compilerVersion>1.8</maven.compiler.compilerVersion>
     </properties>
     <dependencies>
-        <dependency>
+        <!--<dependency>
             <groupId>com.qingfeng</groupId>
             <artifactId>common_utils</artifactId>
+            <version>1.0.0</version>
+        </dependency>-->
+
+        <dependency>
+            <groupId>com.qingfeng</groupId>
+            <artifactId>service_utils</artifactId>
             <version>1.0.0</version>
         </dependency>
 

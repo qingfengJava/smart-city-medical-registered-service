@@ -24,6 +24,14 @@ public interface MsmService {
     boolean sendEmail(String phone, String code);
 
     /**
+     * 腾讯云服务发送短信
+     * @param phone
+     * @param code
+     * @return
+     */
+    boolean sendCodeByTeng(String phone, String code);
+
+    /**
      * 阿里云限额5条短信
      * @param phone
      * @param code

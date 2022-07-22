@@ -1,16 +1,17 @@
 package com.qingfeng.user.controller;
 
+import com.qingfeng.model.model.user.UserInfo;
 import com.qingfeng.model.vo.user.LoginVo;
+import com.qingfeng.model.vo.user.UserAuthVo;
 import com.qingfeng.smart.result.Result;
+import com.qingfeng.smart.utils.AuthContextHolder;
 import com.qingfeng.user.service.UserInfoService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 
 /**
@@ -32,4 +33,21 @@ public class UserInfoApiController {
         Map<String, Object> info = userInfoService.loginUser(loginVo);
         return Result.ok(info);
     }
+    @ApiOperation("用户认证接口")
+    @PostMapping("auth/userAuth")
+    public Result userAuth(@RequestBody UserAuthVo userAuthVo, HttpServletRequest request) {
+        //传递两个参数，第一个参数用户id，第二个参数认证数据vo对象
+        userInfoService.userAuth(AuthContextHolder.getUserId(request),userAuthVo);
+        return Result.ok();
+    }
+
+    @ApiOperation("获取用户id信息接口")
+    @GetMapping("auth/getUserInfo")
+    public Result getUserInfo(HttpServletRequest request) {
+        Long userId = AuthContextHolder.getUserId(request);
+        UserInfo userInfo = userInfoService.getById(userId);
+        return Result.ok(userInfo);
+    }
+
+
 }

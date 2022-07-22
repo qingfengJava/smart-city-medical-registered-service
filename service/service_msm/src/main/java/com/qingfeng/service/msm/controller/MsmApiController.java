@@ -51,14 +51,15 @@ public class MsmApiController {
             //说明是邮箱
             isSend = msmService.sendEmail(phone,code);
         }else{
-           isSend = msmService.sendCodeByAli(phone,code);
+           //isSend = msmService.sendCodeByAli(phone,code);
+           isSend = msmService.sendCodeByTeng(phone,code);
         }
 
 
         //生成验证码放到redis里面，设置有效时间
         if (isSend){
-            //将验证码存入redis，2分钟内有效
-            redisTemplate.opsForValue().set(phone,code,2, TimeUnit.MINUTES);
+            //将验证码存入redis，5分钟内有效
+            redisTemplate.opsForValue().set(phone,code,5, TimeUnit.MINUTES);
             return Result.ok();
         }else{
             return Result.fail().message("验证码发送失败");

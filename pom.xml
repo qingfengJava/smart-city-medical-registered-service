@@ -8,7 +8,6 @@
         <module>service</module>
         <module>service-client</module>
         <module>service_gateway</module>
-        <module>service_sms</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>

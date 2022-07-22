@@ -1,0 +1,13 @@
+[
+  {"hoscode":"1319-01","depcode":"200148644","depname":"儿科门诊(西院国际医疗)","intro":"儿科门诊(西院国际医疗)","bigcode":"1e452d84823e025229c72c23d100a464","bigname":"国际医疗部"},
+  {"hoscode":"1319-01","depcode":"200104114","depname":"国际医疗(妇科)","intro":"国际医疗(妇科)","bigcode":"1e452d84823e025229c72c23d100a464","bigname":"国际医疗部"},
+  {"hoscode":"1319-01","depcode":"200104115","depname":"国际医疗(心理医学科)","intro":"国际医疗(心理医学科)","bigcode":"1e452d84823e025229c72c23d100a464","bigname":"国际医疗部"}
+]
+
+
+[
+  {"hoscode":"1319-01","depcode":"200140878","title":"医师","docname":"","skill":"内分泌科常见病。","workDate":"2021-01-28","workTime":0,"reservedNumber":33,"availableNumber":22,"amount":"100","status":1,"hosScheduleId":"112"},
+  {"hoscode":"1319-01","depcode":"200140878","title":"副主任医师","docname":"裴育","skill":"骨质疏松和骨代谢疾病、糖尿病、甲状腺疾病。","workDate":"2021-01-28","workTime":0,"reservedNumber":40,"availableNumber":6,"amount":"100","status":1,"hosScheduleId":"113"},
+  {"hoscode":"1319-01","depcode":"200140878","title":"副主任医师","docname":"邵迎红","skill":"内分泌与代谢性疾病。","workDate":"2021-01-28","workTime":1,"reservedNumber":27,"availableNumber":10,"amount":"100","status":1,"hosScheduleId":"114"}
+
+]

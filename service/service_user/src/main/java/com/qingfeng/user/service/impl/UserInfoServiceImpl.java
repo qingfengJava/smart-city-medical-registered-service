@@ -2,8 +2,10 @@ package com.qingfeng.user.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.qingfeng.model.enums.AuthStatusEnum;
 import com.qingfeng.model.model.user.UserInfo;
 import com.qingfeng.model.vo.user.LoginVo;
+import com.qingfeng.model.vo.user.UserAuthVo;
 import com.qingfeng.smart.exception.GlobalException;
 import com.qingfeng.smart.jwt.JwtHelper;
 import com.qingfeng.smart.result.ResultCodeEnum;
@@ -50,20 +52,39 @@ public class UserInfoServiceImpl extends ServiceImpl<UserInfoMapper, UserInfo> i
             throw new GlobalException(ResultCodeEnum.CODE_ERROR);
         }
 
-        //判断是否是第一次登录：根据手机号或邮箱查询数据库，如果不存在相同手机号就是第一次登录
-        QueryWrapper<UserInfo> wrapper = new QueryWrapper<>();
-        wrapper.eq("phone",phone);
-        UserInfo userInfo = baseMapper.selectOne(wrapper);
-        //第一次使用这个手机号登录
-        if (userInfo == null){
-            //添加信息到数据库
-            userInfo = new UserInfo();
-            userInfo.setName("");
-            userInfo.setPhone(phone);
-            userInfo.setStatus(1);
-
-            baseMapper.insert(userInfo);
+        //绑定手机号码
+        UserInfo userInfo = null;
+        if(!StringUtils.isEmpty(loginVo.getOpenid())) {
+            userInfo = this.selectWxInfoOpenId(loginVo.getOpenid());
+            if(null != userInfo) {
+                userInfo.setPhone(loginVo.getPhone());
+                this.updateById(userInfo);
+            } else {
+                throw new GlobalException(ResultCodeEnum.DATA_ERROR);
+            }
         }
+
+        /**
+         * 如果userinfo为空，进行正常的手机登录
+         */
+        if (userInfo == null){
+            //判断是否是第一次登录：根据手机号或邮箱查询数据库，如果不存在相同手机号就是第一次登录
+            QueryWrapper<UserInfo> wrapper = new QueryWrapper<>();
+            wrapper.eq("phone",phone);
+            userInfo = baseMapper.selectOne(wrapper);
+            //第一次使用这个手机号登录
+            if (userInfo == null){
+                //添加信息到数据库
+                userInfo = new UserInfo();
+                userInfo.setName("");
+                userInfo.setPhone(phone);
+                userInfo.setStatus(1);
+
+                baseMapper.insert(userInfo);
+            }
+        }
+
+
         //校验是否被禁用
         if (userInfo.getStatus() == 0){
             throw new GlobalException(ResultCodeEnum.LOGIN_DISABLED_ERROR);
@@ -86,5 +107,34 @@ public class UserInfoServiceImpl extends ServiceImpl<UserInfoMapper, UserInfo> i
 
         //返回登录信息
         return map;
+    }
+
+    /**
+     * 根据openid查询信息是否已经存在
+     * @param openid
+     * @return
+     */
+    @Override
+    public UserInfo selectWxInfoOpenId(String openid) {
+        QueryWrapper<UserInfo> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("openid",openid);
+        UserInfo userInfo = baseMapper.selectOne(queryWrapper);
+        return userInfo;
+    }
+
+    @Override
+    public void userAuth(Long userId, UserAuthVo userAuthVo) {
+        //1、根据用户id查询用户信息
+        UserInfo userInfo = baseMapper.selectById(userId);
+        //2、设置认证信息
+        //认证人的姓名
+        userInfo.setName(userAuthVo.getName());
+        //其他认证信息
+        userInfo.setCertificatesType(userAuthVo.getCertificatesType());
+        userInfo.setCertificatesNo(userAuthVo.getCertificatesNo());
+        userInfo.setCertificatesUrl(userAuthVo.getCertificatesUrl());
+        userInfo.setAuthStatus(AuthStatusEnum.AUTH_RUN.getStatus());
+        //3、进行信息更新
+        baseMapper.updateById(userInfo);
     }
 }
