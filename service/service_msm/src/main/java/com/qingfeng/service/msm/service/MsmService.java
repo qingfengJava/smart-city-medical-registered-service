@@ -1,5 +1,7 @@
 package com.qingfeng.service.msm.service;
 
+import com.qingfeng.model.vo.msm.MsmVo;
+
 /**
  * @author 清风学Java
  * @version 1.0.0
@@ -30,6 +32,13 @@ public interface MsmService {
      * @return
      */
     boolean sendCodeByTeng(String phone, String code);
+
+    /**
+     * 使用mq发送短信
+     * @param msmVo
+     * @return
+     */
+    boolean send(MsmVo msmVo);
 
     /**
      * 阿里云限额5条短信

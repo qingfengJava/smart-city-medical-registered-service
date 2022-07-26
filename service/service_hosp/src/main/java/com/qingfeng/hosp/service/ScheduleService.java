@@ -1,6 +1,7 @@
 package com.qingfeng.hosp.service;
 
 import com.qingfeng.model.model.hosp.Schedule;
+import com.qingfeng.model.vo.hosp.ScheduleOrderVo;
 import com.qingfeng.model.vo.hosp.ScheduleQueryVo;
 import org.springframework.data.domain.Page;
 
@@ -56,4 +57,35 @@ public interface ScheduleService {
      * @return
      */
     List<Schedule> getDetailSchedule(String hoscode, String depcode, String workDate);
+
+    /**
+     * 获取可预约排班数据
+     * @param page
+     * @param limit
+     * @param hoscode
+     * @param depcode
+     * @return
+     */
+    Object getBookingScheduleRule(Integer page, Integer limit, String hoscode, String depcode);
+
+    /**
+     * 根据排班id获取排班数据
+     * @param scheduleId
+     * @return
+     */
+    Schedule getById(String scheduleId);
+
+    /**
+     * 根据排班id获取预约下单数据
+     * @param scheduleId
+     * @return
+     */
+    ScheduleOrderVo getScheduleOrderVo(String scheduleId);
+
+    /**
+     * 修改排班
+     * @param schedule
+     */
+    void update(Schedule schedule);
+
 }

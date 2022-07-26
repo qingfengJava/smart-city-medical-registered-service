@@ -15,6 +15,7 @@
     <modules>
         <module>common_utils</module>
         <module>service_utils</module>
+        <module>rabbit_util</module>
     </modules>
     <packaging>pom</packaging>
 

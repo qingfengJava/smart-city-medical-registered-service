@@ -2,6 +2,7 @@ package com.qingfeng.hosp.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.qingfeng.model.model.hosp.HospitalSet;
+import com.qingfeng.model.vo.order.SignInfoVo;
 
 /**
  * 医院设置的业务层接口
@@ -20,4 +21,11 @@ public interface HospitalSetService extends IService<HospitalSet> {
      * @return
      */
     String getSingKey(String hoscode);
+
+    /**
+     * 获取医院签名信息
+     * @param hoscode
+     * @return
+     */
+    SignInfoVo getSignInfoVo(String hoscode);
 }

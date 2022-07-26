@@ -10,6 +10,7 @@ import com.aliyuncs.exceptions.ServerException;
 import com.aliyuncs.http.MethodType;
 import com.aliyuncs.profile.DefaultProfile;
 import com.github.qcloudsms.SmsSingleSender;
+import com.qingfeng.model.vo.msm.MsmVo;
 import com.qingfeng.service.msm.service.MsmService;
 import com.qingfeng.service.msm.utils.ConstantPropertiesUtils;
 import com.qingfeng.service.msm.utils.ConstantTengPropertiesUtils;
@@ -101,6 +102,26 @@ public class MsmServiceImpl implements MsmService {
             e.printStackTrace();
             return false;
         }
+    }
+
+    /**
+     * Mq发送短信的封装
+     * @param msmVo
+     * @return
+     */
+    @Override
+    public boolean send(MsmVo msmVo) {
+        if(!StringUtils.isEmpty(msmVo.getPhone())) {
+
+            Map<String, Object> param = msmVo.getParam();
+            String content = param.get("title")+"\r\n"+param.get("amount")+"\r\n"+param.get("reserveDate")+"\r\n"+param.get("name")+"\r\n"+param.get("quitTime");
+
+            int i = emailUtils.sendEmail(msmVo.getPhone(), "【智慧医疗预约挂号服务平台】", content);
+
+            return i == 1 ? true : false;
+        }
+        return false;
+
     }
 
     /**
