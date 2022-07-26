@@ -35,6 +35,14 @@
             <artifactId>rabbit_util</artifactId>
             <version>1.0.0</version>
         </dependency>
+
+        <!-- 微信支付 -->
+        <dependency>
+            <groupId>com.github.wxpay</groupId>
+            <artifactId>wxpay-sdk</artifactId>
+            <version>0.0.3</version>
+        </dependency>
+
     </dependencies>
 
 
