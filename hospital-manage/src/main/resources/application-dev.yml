@@ -17,10 +17,9 @@ spring:
     mode: HTML
   redis:
     host: 47.108.28.239
-    port: 6379
+    port: 6390
     database: 0
     timeout: 1800000
-    password: 123456
     lettuce:
       pool:
         max-active: 20 #最大连接数

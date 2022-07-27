@@ -16,6 +16,7 @@ import com.qingfeng.model.vo.order.OrderQueryVo;
 import com.qingfeng.model.vo.order.SignInfoVo;
 import com.qingfeng.order.dao.OrderMapper;
 import com.qingfeng.order.service.OrderService;
+import com.qingfeng.order.service.WeixinService;
 import com.qingfeng.rabbit.constant.MqConst;
 import com.qingfeng.rabbit.service.RabbitService;
 import com.qingfeng.smart.exception.GlobalException;
@@ -43,11 +44,12 @@ public class OrderServiceImpl extends
 
     @Autowired
     private PatientFeignClient patientFeignClient;
-
     @Autowired
     private HospitalFeignClient hospitalFeignClient;
     @Autowired
     private RabbitService rabbitService;
+    @Autowired
+    private WeixinService weixinService;
 
 
     /**
@@ -120,9 +122,11 @@ public class OrderServiceImpl extends
         //请求医院系统接口
         System.out.println(paramMap);
         System.out.println(signInfoVo.getApiUrl());
+        System.out.println("到这里啦");
         JSONObject result = HttpRequestHelper.sendRequest(paramMap, signInfoVo.getApiUrl()+"/order/submitOrder");
-
+        System.out.println(result);
         if(result.getInteger("code") == 200) {
+            System.out.println("到这里啦。。。。。。。。。");
             JSONObject jsonObject = result.getJSONObject("data");
             //预约记录唯一标识（医院预约记录主键）
             String hosRecordId = jsonObject.getString("hosRecordId");
@@ -167,7 +171,6 @@ public class OrderServiceImpl extends
 
             orderMqVo.setMsmVo(msmVo);
             rabbitService.sendMessage(MqConst.EXCHANGE_DIRECT_ORDER, MqConst.ROUTING_ORDER, orderMqVo);
-
 
         } else {
             throw new GlobalException(result.getString("message"), ResultCodeEnum.FAIL.getCode());
@@ -250,6 +253,67 @@ public class OrderServiceImpl extends
         return map;
 
     }
+
+    /**
+     * 取消预约
+     * @param orderId
+     * @return
+     */
+    @Override
+    public Boolean cancelOrder(Long orderId) {
+        OrderInfo orderInfo = this.getById(orderId);
+        //当前时间大约退号时间，不能取消预约
+        DateTime quitTime = new DateTime(orderInfo.getQuitTime());
+        if(quitTime.isBeforeNow()) {
+            throw new GlobalException(ResultCodeEnum.CANCEL_ORDER_NO);
+        }
+        SignInfoVo signInfoVo = hospitalFeignClient.getSignInfoVo(orderInfo.getHoscode());
+        if(null == signInfoVo) {
+            throw new GlobalException(ResultCodeEnum.PARAM_ERROR);
+        }
+        Map<String, Object> reqMap = new HashMap<>();
+        reqMap.put("hoscode",orderInfo.getHoscode());
+        reqMap.put("hosRecordId",orderInfo.getHosRecordId());
+        reqMap.put("timestamp", HttpRequestHelper.getTimestamp());
+        String sign = HttpRequestHelper.getSign(reqMap, signInfoVo.getSignKey());
+        reqMap.put("sign", sign);
+
+        JSONObject result = HttpRequestHelper.sendRequest(reqMap, signInfoVo.getApiUrl()+"/order/updateCancelStatus");
+
+        if(result.getInteger("code") != 200) {
+            throw new GlobalException(result.getString("message"), ResultCodeEnum.FAIL.getCode());
+        } else {
+            //是否支付 退款
+            if(orderInfo.getOrderStatus().intValue() == OrderStatusEnum.PAID.getStatus().intValue()) {
+                //已支付 退款
+                boolean isRefund = weixinService.refund(orderId);
+                if(!isRefund) {
+                    throw new GlobalException(ResultCodeEnum.CANCEL_ORDER_FAIL);
+                }
+            }
+            //更改订单状态
+            orderInfo.setOrderStatus(OrderStatusEnum.CANCLE.getStatus());
+            this.updateById(orderInfo);
+            //发送mq信息更新预约数 我们与下单成功更新预约数使用相同的mq信息，不设置可预约数与剩余预约数，接收端可预约数减1即可
+            OrderMqVo orderMqVo = new OrderMqVo();
+            orderMqVo.setScheduleId(orderInfo.getScheduleId());
+            //短信提示
+            MsmVo msmVo = new MsmVo();
+            msmVo.setPhone(orderInfo.getPatientPhone());
+            msmVo.setTemplateCode("SMS_194640722");
+            String reserveDate = new DateTime(orderInfo.getReserveDate()).toString("yyyy-MM-dd") + (orderInfo.getReserveTime()==0 ? "上午": "下午");
+            Map<String,Object> param = new HashMap<String,Object>(16){{
+                put("title", orderInfo.getHosname()+"|"+orderInfo.getDepname()+"|"+orderInfo.getTitle());
+                put("reserveDate", reserveDate);
+                put("name", orderInfo.getPatientName());
+            }};
+            msmVo.setParam(param);
+            orderMqVo.setMsmVo(msmVo);
+            rabbitService.sendMessage(MqConst.EXCHANGE_DIRECT_ORDER, MqConst.ROUTING_ORDER, orderMqVo);
+        }
+        return true;
+    }
+
 
     private OrderInfo packOrderInfo(OrderInfo orderInfo) {
         orderInfo.getParam().put("orderStatusString", OrderStatusEnum.getStatusNameByStatus(orderInfo.getOrderStatus()));
