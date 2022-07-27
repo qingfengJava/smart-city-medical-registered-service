@@ -13,6 +13,7 @@
         <module>service-cmn-client</module>
         <module>service_user_client</module>
         <module>service_hosp_client</module>
+        <module>service-order-client</module>
     </modules>
 
     <artifactId>service-client</artifactId>

@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.qingfeng.model.enums.OrderStatusEnum;
 import com.qingfeng.model.model.order.OrderInfo;
+import com.qingfeng.model.vo.order.OrderCountQueryVo;
 import com.qingfeng.model.vo.order.OrderQueryVo;
 import com.qingfeng.order.service.OrderService;
 import com.qingfeng.smart.result.Result;
@@ -15,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Map;
 
 /**
  * @author 清风学Java
@@ -72,5 +74,12 @@ public class OrderApiController {
             @PathVariable("orderId") Long orderId) {
         return Result.ok(orderService.cancelOrder(orderId));
     }
+
+    @ApiOperation(value = "获取订单统计数据")
+    @PostMapping("inner/getCountMap")
+    public Map<String, Object> getCountMap(@RequestBody OrderCountQueryVo orderCountQueryVo) {
+        return orderService.getCountMap(orderCountQueryVo);
+    }
+
 }
 
